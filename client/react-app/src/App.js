@@ -1,0 +1,46 @@
+import { useState } from 'react';
+import './App.css';
+
+function App() {
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [genre, setGenre] = useState('');
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const data = { title, author, genre };
+    fetch('http://localhost:3000/api/data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Title:
+        <input type="text" value={title} onChange={e => setTitle(e.target.value)} />
+      </label>
+      <label>
+        Author:
+        <input type="text" value={author} onChange={e => setAuthor(e.target.value)} />
+      </label>
+      <label>
+        Genre:
+        <input type="text" value={genre} onChange={e => setGenre(e.target.value)} />
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+
+export default App;
